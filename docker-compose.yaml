@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  bun:
+    container_name: bun-env
+    image: bun-env
+    ports:
+      - 3333:3333
+    build: .
+
+  postgres-bitnami:
+    depends_on:
+      - bun
+    container_name: bitnami-postgresql
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=DOCKER
+      - POSTGRESQL_USERNAME=postgres
+    volumes:
+      - ./data/postgres:/bitnami/postgresql
+
+volumes:
+  postgres-bitnami:
